@@ -1,3 +1,18 @@
+---
+license: mit
+language:
+- en
+task_categories:
+- text-classification
+pretty_name: evalroute-tasks
+size_categories:
+- n<1K
+tags:
+- evalroute
+- task-routing
+- coding-agents
+---
+
 evalroute-tasks
 ===============
 
@@ -7,6 +22,16 @@ lane a human asserts it belongs to. Tier 1 (task → lane) is the only required
 label today; the schema leaves room for tier 2 (task → arm outcome) and tier 3
 (task → done artifact) so contributors can backfill later without a format
 break.
+
+Status: zero to one. One contributor, 54 rows, four of nine lanes. Per lane:
+routine-coding 30, dl-ml-research-engineering 13, alignment-reasoning 10, prose 1;
+hard-agentic-coding, long-doc-reading, web-research, math-first-principles and
+orchestration have none yet. 24 rows are real tasks pinned in one dispatcher's
+ledger (mostly coding briefs), 30 are hand-written tier-a taskset rows. n is small
+and the mix reflects one person's work — that is the point of publishing it:
+your work shapes your router, and the shared encoder is only as broad as this
+file. The trained encoder is `keppy/evalroute-lane-encoder`; the outcomes
+flywheel (lane/arm/verdict, no text) is `keppy/evalroute-flywheel`.
 
 Tiers
 -----

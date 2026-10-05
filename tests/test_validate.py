@@ -74,3 +74,10 @@ def test_contributor_stem_rule(tmp_path):
     r = run_validate([f])
     assert r.returncode == 1
     assert "contributor-file-stem" in r.stderr
+
+
+def test_publish_gate_catches_forward_slash_drive_paths():
+    """A forward-slash drive path is as identifying as a backslash one; batch 1 review found one that slipped."""
+    sys.path.insert(0, str(REPO / "scripts"))
+    from validate import GATE_RE
+    assert any(rx.search("run git -C C:/Users/someone/repo log") for rx in GATE_RE.values())

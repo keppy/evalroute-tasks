@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
 """Upload the reviewed corpus to a Hugging Face dataset repo.
 
-Usage: python scripts/upload.py --repo <owner/name> [--dry-run]
+Usage: python scripts/upload.py --repo <owner/name> [--dry-run] [--root <repo-root>]
 
 Gates:
-  - runs scripts/validate.py over tasks/*.jsonl first; refuses on failure
-  - each tasks/<file>.jsonl's sha256 must appear in REVIEWED.md
+  - runs scripts/validate.py over <root>/tasks/*.jsonl first; refuses on failure
+  - each tasks/<file>.jsonl's sha256 must appear in <root>/REVIEWED.md
 Refuses with exit 2 naming the offending file.
+
+--root exists so tests run against a temporary copy and never touch the real
+tasks/ and REVIEWED.md (the first version of the tests deleted a reviewed batch).
 """
 from __future__ import annotations
 
@@ -19,27 +22,30 @@ from datetime import date, datetime
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-REVIEWED = REPO_ROOT / "REVIEWED.md"
 
 
 def sha_of(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def reviewed_shas() -> set[str]:
-    if not REVIEWED.exists():
+def reviewed_shas(reviewed: Path) -> set[str]:
+    if not reviewed.exists():
         return set()
     rx = re.compile(r"reviewed:\s*([0-9a-f]{64})")
-    return set(rx.findall(REVIEWED.read_text(encoding="utf-8")))
+    return set(rx.findall(reviewed.read_text(encoding="utf-8")))
 
 
 def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--repo", required=True)
     ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--root", default=str(REPO_ROOT),
+                    help="repo root holding tasks/, REVIEWED.md, README.md (tests point this at a tmp copy)")
     args = ap.parse_args(argv)
+    root = Path(args.root)
+    reviewed = root / "REVIEWED.md"
 
-    tasks_dir = REPO_ROOT / "tasks"
+    tasks_dir = root / "tasks"
     files = sorted(tasks_dir.glob("*.jsonl"))
     if not files:
         print("nothing to upload: tasks/ holds no .jsonl files", file=sys.stderr)
@@ -55,7 +61,7 @@ def main(argv=None):
         return 2
 
     # gate 2: REVIEWED.md must carry every file's sha
-    shas = reviewed_shas()
+    shas = reviewed_shas(reviewed)
     missing = [f for f in files if sha_of(f) not in shas]
     if missing:
         for f in missing:
@@ -81,7 +87,7 @@ def main(argv=None):
         commit_message=f"evalroute-tasks corpus update {datetime.now().isoformat(timespec='seconds')} ({date.today().isoformat()})",
     )
     api.upload_file(
-        path_or_fileobj=str(REPO_ROOT / "README.md"),
+        path_or_fileobj=str(root / "README.md"),
         path_in_repo="README.md",
         repo_id=args.repo,
         repo_type="dataset",

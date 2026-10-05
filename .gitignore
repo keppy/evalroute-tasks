@@ -3,3 +3,4 @@ private_terms.txt
 __pycache__/
 dist/
 evalroute_tasks.egg-info/
+.pytest_cache/

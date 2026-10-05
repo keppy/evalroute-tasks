@@ -32,7 +32,7 @@ SECRET_RE = re.compile(
 )
 GATE_RE = {
     "secrets": SECRET_RE,
-    "paths": re.compile(r"[A-Za-z]:\\|/c/Users|~/|AppData|/home/[a-z]"),
+    "paths": re.compile(r"[A-Za-z]:[\/]|/c/Users|~/|AppData|/home/[a-z]"),
     "email": re.compile(r"\S+@\S+\.\S+"),
     "handles": re.compile(r"(^|\s)@[A-Za-z0-9_]{2,}"),
     "urls-with-credentials": re.compile(r"://[^/\s]+:[^/\s]+@"),
