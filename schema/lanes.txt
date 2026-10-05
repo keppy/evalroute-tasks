@@ -1,0 +1,9 @@
+alignment-reasoning
+routine-coding
+dl-ml-research-engineering
+hard-agentic-coding
+long-doc-reading
+web-research
+math-first-principles
+prose
+orchestration

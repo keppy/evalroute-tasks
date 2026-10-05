@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "evalroute-tasks"
+version = "0.1.0"
+description = "Human-labeled task->lane corpus for evalroute"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { file = "LICENSE" }
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest"]
+upload = ["huggingface_hub>=0.24"]
+
+[tool.setuptools]
+packages = []

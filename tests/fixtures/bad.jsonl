@@ -1,0 +1,14 @@
+{"id": "keppy:x1", "text": "add a CLI verb that reads the ledger and prints per-lane counts", "label": "routine-coding", "source": "ledger-pinned", "contributor": "keppy", "week": "2026-W40"}
+{"id": "keppy:a3f9c1", "text": "add a CLI verb that reads the ledger and prints per-lane counts", "label": "routine-coding", "source": "ledger-pinned", "contributor": "keppy", "week": "2026-W40"}
+{"id": "keppy:a3f9c1", "text": "add a CLI verb that reads the ledger and prints per-lane counts", "label": "routine-coding", "source": "ledger-pinned", "contributor": "keppy", "week": "2026-W40"}
+{"id": "keppy:b7d2e4", "text": "short", "label": "routine-coding", "source": "ledger-pinned", "contributor": "keppy", "week": "2026-W40"}
+{"id": "keppy:c4d5e6", "text": "add a CLI verb that reads the ledger and prints per-lane counts", "label": "not-a-lane", "source": "ledger-pinned", "contributor": "keppy", "week": "2026-W40"}
+{"id": "keppy:d7e8f9", "text": "add a CLI verb that reads the ledger and prints per-lane counts", "label": "routine-coding", "source": "generated", "contributor": "keppy", "week": "2026-W40"}
+{"id": "keppy:e1f2a3", "text": "add a CLI verb that reads the ledger and prints per-lane counts", "label": "routine-coding", "source": "ledger-pinned", "contributor": "Keppy!", "week": "2026-W40"}
+{"id": "keppy:b4c5d6", "text": "add a CLI verb that reads the ledger and prints per-lane counts", "label": "routine-coding", "source": "ledger-pinned", "contributor": "keppy", "week": "2026-40"}
+{"id": "keppy:e7f8a9", "text": "add a CLI verb that reads the ledger and prints per-lane counts", "label": "routine-coding", "source": "ledger-pinned", "contributor": "keppy", "week": "2026-W40", "arm": "z-ai/glm-5.3-flash@medium"}
+{"id": "keppy:f1b2c3", "text": "add a CLI verb that reads the ledger and prints per-lane counts", "label": "routine-coding", "source": "ledger-pinned", "contributor": "keppy", "week": "2026-W40", "arm": "bad arm@medium", "verdict": "pass", "method": "measured", "n": 10}
+{"id": "keppy:d4e5f6", "text": "add a CLI verb that reads the ledger and prints per-lane counts", "label": "routine-coding", "source": "ledger-pinned", "contributor": "keppy", "week": "2026-W40", "checker": "unit test diff", "rubric": "human rubric"}
+{"id": "keppy:a7b8c9", "text": "add a CLI verb that reads the ledger and prints per-lane counts from /c/Users/keppy", "label": "routine-coding", "source": "ledger-pinned", "contributor": "keppy", "week": "2026-W40"}
+{"id": "keppy:f3d4e5", "text": "add a CLI verb that reads the ledger and prints per-lane counts for zeta-scale", "label": "routine-coding", "source": "ledger-pinned", "contributor": "keppy", "week": "2026-W40"}
+{"id": "aug:12345678", "text": "add a CLI verb that reads the ledger and prints per-lane counts", "label": "routine-coding", "source": "ledger-pinned", "contributor": "aug", "week": "2026-W40"}

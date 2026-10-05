@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "evalroute-tasks row (tier 1 required, tiers 2-3 optional)",
+  "type": "object",
+  "required": ["id", "text", "label", "source", "contributor", "week"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {"type": "string", "pattern": "^[a-z0-9_-]+:[a-z0-9_-]{4,}$"},
+    "text": {"type": "string", "minLength": 12, "maxLength": 2000},
+    "label": {"type": "string", "description": "must be in schema/lanes.txt"},
+    "source": {"type": "string", "enum": ["ledger-pinned", "ledger-correction", "taskset", "written"]},
+    "contributor": {"type": "string", "pattern": "^[a-z0-9_-]+$"},
+    "week": {"type": "string", "pattern": "^\\d{4}-W\\d{2}$"},
+    "arm": {"type": "string", "pattern": "^[^@\\s]+@(low|medium|high|xhigh|none)$"},
+    "verdict": {"type": "string", "enum": ["pass", "fail"]},
+    "method": {"type": "string", "enum": ["measured", "observed"]},
+    "n": {"type": "integer", "minimum": 1},
+    "checker": {"type": ["string", "null"], "maxLength": 4000},
+    "rubric": {"type": ["string", "null"], "maxLength": 4000},
+    "reference": {"type": ["string", "null"], "maxLength": 4000}
+  },
+  "allOf": [
+    {
+      "if": {"anyOf": [
+        {"required": ["arm"]}, {"required": ["verdict"]},
+        {"required": ["method"]}, {"required": ["n"]}
+      ]},
+      "then": {"required": ["arm", "verdict", "method", "n"]}
+    }
+  ]
+}
