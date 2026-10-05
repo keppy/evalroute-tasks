@@ -174,6 +174,11 @@ def check_row(row, file, lineno, lanes, terms, seen_ids, failures):
             n = row["n"]
             if not isinstance(n, int) or isinstance(n, bool) or n < 1:
                 fail("tier2-n", "n must be an integer >= 1")
+            mt = row.get("max_turns")
+            if mt is not None and (not isinstance(mt, int) or isinstance(mt, bool) or mt < 1):
+                fail("tier2-max-turns", "max_turns, when present, must be an integer >= 1 (the arm's tool-turn cap)")
+    elif row.get("max_turns") is not None:
+        fail("tier2-coherence", "max_turns is a tier 2 key and needs arm/verdict/method/n alongside it")
 
     # rule 8: tier 3
     nonnull = [k for k in TIER3_KEYS if row.get(k) is not None]

@@ -81,3 +81,18 @@ def test_publish_gate_catches_forward_slash_drive_paths():
     sys.path.insert(0, str(REPO / "scripts"))
     from validate import GATE_RE
     assert any(rx.search("run git -C C:/Users/someone/repo log") for rx in GATE_RE.values())
+
+
+def test_max_turns_is_an_optional_tier2_key(tmp_path):
+    """max_turns rides with tier 2 (it is part of the arm); alone it is incoherent; bad values fail."""
+    base = {"id": "k:mt01", "text": "write a validator for a jsonl schema with tests", "label": "routine-coding",
+            "source": "written", "contributor": "k", "week": "2026-W40"}
+    t2 = dict(base, arm="m@medium", verdict="pass", method="measured", n=10)
+    rows = [dict(t2, id="k:mt01", max_turns=150), dict(t2, id="k:mt02"),           # ok, ok (absent)
+            dict(t2, id="k:mt03", max_turns=0), dict(base, id="k:mt04", max_turns=150)]  # bad, incoherent
+    p = tmp_path / "k.jsonl"
+    p.write_text("".join(json.dumps(r) + "\n" for r in rows), encoding="utf-8")
+    res = run_validate([p])
+    assert res.returncode == 1
+    assert "k:mt03: tier2-max-turns" in res.stderr and "k:mt04: tier2-coherence" in res.stderr
+    assert "k:mt01" not in res.stderr and "k:mt02" not in res.stderr

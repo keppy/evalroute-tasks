@@ -15,6 +15,8 @@
     "verdict": {"type": "string", "enum": ["pass", "fail"]},
     "method": {"type": "string", "enum": ["measured", "observed"]},
     "n": {"type": "integer", "minimum": 1},
+    "max_turns": {"type": ["integer", "null"], "minimum": 1,
+                  "description": "tier 2, optional: the agent's per-run tool-turn cap the arm ran under (Hermes agent.max_turns). Part of the arm: flash@medium at 150 turns and at 300 are different arms. Absent/null = unknown or unbounded."},
     "checker": {"type": ["string", "null"], "maxLength": 4000},
     "rubric": {"type": ["string", "null"], "maxLength": 4000},
     "reference": {"type": ["string", "null"], "maxLength": 4000}

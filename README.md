@@ -39,8 +39,13 @@ Tiers
 | Tier | Question            | Keys                                     | Required |
 |------|---------------------|------------------------------------------|----------|
 | 1    | which lane?         | id, text, label, source, contributor, week | yes    |
-| 2    | which arm, and did it work? | arm, verdict, method, n          | optional (all-or-none) |
+| 2    | which arm, and did it work? | arm, verdict, method, n, max_turns? | optional (all-or-none; max_turns optional within) |
 | 3    | how was done judged? | checker / rubric / reference (at most one) | optional |
+
+An arm is `<model>@<effort>` plus, when known, `max_turns` — the agent runtime's per-run
+tool-turn cap (Hermes `agent.max_turns`; ours is 150). The same model and effort with a
+different cap is a different arm: one finishes a five-step brief and the other does not,
+so an outcome rated on one says nothing about the other.
 
 Row example
 -----------
@@ -48,7 +53,7 @@ Row example
 ```json
 {"id": "keppy:a3f9c1", "text": "add a CLI verb that reads the ledger and prints per-lane counts",
  "label": "routine-coding", "source": "ledger-pinned", "contributor": "keppy", "week": "2026-W40",
- "arm": "z-ai/glm-5.3-flash@medium", "verdict": "pass", "method": "measured", "n": 10,
+ "arm": "z-ai/glm-5.3-flash@medium", "verdict": "pass", "method": "measured", "n": 10, "max_turns": 150,
  "checker": null, "rubric": null, "reference": null}
 ```
 
