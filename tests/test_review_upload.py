@@ -99,3 +99,10 @@ def test_upload_validates_first(monkeypatch):
     finally:
         probe.unlink(missing_ok=True)
         REVIEWED.unlink(missing_ok=True)
+
+
+def test_reviewed_md_is_tracked_not_ignored():
+    """REVIEWED.md is the public attestation that a batch was read; it ships in the repo."""
+    gi = Path(__file__).resolve().parents[1].joinpath(".gitignore").read_text(encoding="utf-8").split()
+    assert "REVIEWED.md" not in gi
+    assert "private_terms.txt" in gi

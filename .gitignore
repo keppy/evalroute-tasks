@@ -2,5 +2,4 @@
 private_terms.txt
 __pycache__/
 dist/
-REVIEWED.md
 evalroute_tasks.egg-info/
