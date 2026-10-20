@@ -46,7 +46,32 @@ def test_review_prints_rows_and_sha():
     m = re.search(r"batch sha256: ([0-9a-f]{64})", out)
     assert m
     assert "add `reviewed:" in out
-    assert hashlib.sha256(GOOD.read_bytes()).hexdigest() == m.group(1)
+    assert upload.sha_of(GOOD) == m.group(1)
+
+
+def test_sha_ignores_line_endings(tmp_path):
+    """A CRLF checkout (Windows core.autocrlf) and an LF checkout of the same rows hash
+    the same, in review and in the upload gate."""
+    lf = GOOD.read_bytes().replace(b"\r\n", b"\n")
+    crlf = lf.replace(b"\n", b"\r\n")
+    assert lf != crlf
+    a, b = tmp_path / "lf.jsonl", tmp_path / "crlf.jsonl"
+    a.write_bytes(lf)
+    b.write_bytes(crlf)
+    assert upload.sha_of(a) == upload.sha_of(b) == hashlib.sha256(lf).hexdigest()
+    printed = [_capture(review.main, [str(p)])[1] for p in (a, b)]
+    shas = {re.search(r"batch sha256: ([0-9a-f]{64})", out).group(1) for out in printed}  # type: ignore[union-attr]
+    assert shas == {upload.sha_of(a)}
+
+
+def test_upload_accepts_crlf_batch_attested_on_lf(root):
+    lf = GOOD.read_bytes().replace(b"\r\n", b"\n")
+    (root / "tasks" / "keppy.jsonl").write_bytes(lf.replace(b"\n", b"\r\n"))
+    (root / "REVIEWED.md").write_text(
+        f"reviewed: {hashlib.sha256(lf).hexdigest()}  2026-10-20  keppy\n", encoding="utf-8")
+    rc, out, err = _capture(upload.main, _args(root, "--dry-run"))
+    assert rc == 0, err
+    assert "dry run" in out
 
 
 def test_review_bad_usage():
@@ -116,4 +141,7 @@ def test_reviewed_md_is_tracked_not_ignored():
     """REVIEWED.md is the public attestation that a batch was read; it ships in the repo."""
     gi = (REPO / ".gitignore").read_text(encoding="utf-8").split()
     assert "REVIEWED.md" not in gi
-    assert "private_terms.txt" in gi
+    # root-anchored: the real denylist stays local, but the test fixture of the same name
+    # must ship (unanchored, it was ignored and a fresh clone failed test_validate)
+    assert "/private_terms.txt" in gi
+    assert (REPO / "tests" / "fixtures" / "private_terms.txt").exists()

@@ -18,7 +18,8 @@ def main(argv=None):
         return 2
     path = Path(argv[0])
     data = path.read_bytes()
-    sha = hashlib.sha256(data).hexdigest()
+    # CRLF -> LF before hashing, same as upload.sha_of: the sha must not depend on the checkout
+    sha = hashlib.sha256(data.replace(b"\r\n", b"\n")).hexdigest()
     n = 0
     for raw in data.decode("utf-8").splitlines():
         line = raw.strip()

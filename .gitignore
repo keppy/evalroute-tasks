@@ -1,5 +1,5 @@
 .venv/
-private_terms.txt
+/private_terms.txt
 __pycache__/
 dist/
 evalroute_tasks.egg-info/

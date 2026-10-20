@@ -25,7 +25,14 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 
 
 def sha_of(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+    """sha256 of the batch with CRLF normalized to LF.
+
+    The attestation is of the rows, not of a checkout's line endings: a Windows
+    core.autocrlf checkout writes CRLF while the git blob and a Mac/Linux checkout
+    are LF, and the raw-bytes sha made the same reviewed batch fail the gate on the
+    next machine. review.py and dl-ecosystem's reviewed_batches check hash the same way.
+    """
+    return hashlib.sha256(path.read_bytes().replace(b"\r\n", b"\n")).hexdigest()
 
 
 def reviewed_shas(reviewed: Path) -> set[str]:

@@ -67,7 +67,8 @@ The publish gate (three steps, all must pass)
    you pass `--private-terms <file>`, any case-insensitive whole-word hit fails
    the row. Keep employer/project terms you must not publish in that file.
 3. Human review: run `python scripts/review.py tasks/<you>.jsonl`, read every
-   numbered row, compute the batch sha, add
+   numbered row, compute the batch sha (sha256 with CRLF normalized to LF, so
+   it is the same on every checkout), add
    `reviewed: <sha>  <date>  <contributor>` to `REVIEWED.md`, then open a PR.
    `scripts/upload.py` refuses to touch Hugging Face unless `REVIEWED.md`
    contains a line for every file's sha.

@@ -1,0 +1,3 @@
+# Batches are attested by sha256 (CRLF normalized to LF); keep every checkout LF
+# so the bytes on disk match what review.py printed.
+tasks/*.jsonl text eol=lf
